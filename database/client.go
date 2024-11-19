@@ -9,6 +9,7 @@ import (
 var Instance *gorm.DB
 var dbError error
 func Connect(connectionString string) () {
+  
   Instance, dbError = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
   if dbError != nil {
     log.Fatal(dbError)
@@ -17,6 +18,6 @@ func Connect(connectionString string) () {
   log.Println("Connected to Database!")
 }
 func Migrate() {
-  Instance.AutoMigrate(&models.User{})
+  Instance.AutoMigrate(&models.User{}, &models.Categories{})
   log.Println("Database Migration Completed!")
 }

@@ -14,19 +14,30 @@
 		
 		  // Initialize Router
 		router := initRouter()
-		router.Run(":8080")
+		router.Run("localhost:8080")
 	}
 
 	func initRouter() *gin.Engine {
 		router := gin.Default()
 		api := router.Group("/api")
 		{
-		  api.POST("/token", controllers.GenerateToken)
-		  api.POST("/user/register", controllers.RegisterUser)
-		  secured := api.Group("/secured").Use(middlewares.Auth())
-		  {
-			secured.GET("/ping", controllers.Ping)
-		  }	
+			api.POST("/token", controllers.GenerateToken)
+			api.POST("/user/register", controllers.RegisterUser)
+	
+			// Resource-style routes for categories
+			categoryRoutes := api.Group("/categories")
+			{
+				categoryRoutes.GET("/", controllers.GetCategories)             
+				categoryRoutes.POST("/", middlewares.Auth(), controllers.CreateCategory) 
+				categoryRoutes.GET("/:id", controllers.GetCategory)  
+				// categoryRoutes.PUT("/:id", middlewares.Auth(), controllers.UpdateCategory)
+				// categoryRoutes.DELETE("/:id", middlewares.Auth(), controllers.DeleteCategory)
+			}
+	
+			secured := api.Group("/secured").Use(middlewares.Auth())
+			{
+				secured.GET("/ping", controllers.Ping)
+			}
 		}
 		return router
-	  }
+	}
