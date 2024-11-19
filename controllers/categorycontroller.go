@@ -72,3 +72,16 @@ func UpdateCategory(c *gin.Context)  {
 	
 	c.JSON(http.StatusOK, gin.H{"data": category})
 }
+
+func DestroyCategort(c *gin.Context)  {
+	var category models.Categories
+
+	if err := database.Instance.Where("id = ?", c.Param("id")).First(&category).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Category not found!"})
+		return
+	}
+
+	database.Instance.Model(&category).Delete(&category)
+	
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}

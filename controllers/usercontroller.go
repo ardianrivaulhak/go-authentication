@@ -2,7 +2,7 @@ package controllers
 
 import (
   "go-authentication/database"
-  "go-authentication/models"
+	"go-authentication/models"
   "net/http"
   "github.com/gin-gonic/gin"
 )

@@ -24,14 +24,13 @@
 			api.POST("/token", controllers.GenerateToken)
 			api.POST("/user/register", controllers.RegisterUser)
 	
-			// Resource-style routes for categories
 			categoryRoutes := api.Group("/categories")
 			{
 				categoryRoutes.GET("/", controllers.GetCategories)             
 				categoryRoutes.POST("/", middlewares.Auth(), controllers.CreateCategory) 
 				categoryRoutes.GET("/:id", controllers.GetCategory)  
-				// categoryRoutes.PUT("/:id", middlewares.Auth(), controllers.UpdateCategory)
-				// categoryRoutes.DELETE("/:id", middlewares.Auth(), controllers.DeleteCategory)
+				categoryRoutes.PUT("/:id", middlewares.Auth(), controllers.UpdateCategory)
+				categoryRoutes.DELETE("/:id", middlewares.Auth(), controllers.DestroyCategort)
 			}
 	
 			secured := api.Group("/secured").Use(middlewares.Auth())
